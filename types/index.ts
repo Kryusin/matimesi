@@ -101,3 +101,16 @@ export type ShopProps = {
     // お店までの距離
     distance?: number;
 }
+
+export type ParamsProps = {
+    key: string;
+    lat?: number;
+    lng?: number;
+    range?: string;
+    order: string;
+    start: number;
+    format: string;
+    keyword?: string;
+    name?: string;
+    count: number;
+}

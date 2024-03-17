@@ -1,23 +1,31 @@
 'use server'
-import { EnterpriseProps } from '@/types';
+import { EnterpriseProps, ParamsProps } from '@/types';
 import axios from 'axios';
 
 const EARTH_RADIUS = 6378.137;
 
 export default async function getData({keyword, lat, lng, range, order, start}:{keyword:string, lat:number, lng:number, range:string, order:string, start:number}) {
+    if(range === '0' && keyword === '') {
+        return '検索範囲を指定するかキーワードを入力して下さい。'
+    }
     // ホットペッパーグルメAPIを叩く
-    const response = await axios.get('https://webservice.recruit.co.jp/hotpepper/gourmet/v1/', {
-      params: {
-        key: process.env.NEXT_PUBLIC_API_KEY,
-        keyword: keyword,
-        lat: lat,
-        lng: lng,
-        range: range,
+    let params:ParamsProps = {
+        key: process.env.NEXT_PUBLIC_API_KEY!,
         order: order,
         count: 10,
         start: start,
         format: 'json',
-      },
+        keyword: keyword
+    }
+
+    if(range !== '0') {
+        params.lat = lat;
+        params.lng = lng;
+        params.range = range;
+    }
+    console.log(params)
+    const response = await axios.get('https://webservice.recruit.co.jp/hotpepper/gourmet/v1/', {
+      params: {...params},
     });
     // データを整形(型の説明は/types/index.tsに記載しています)
     const data:EnterpriseProps = {result:response.data.results.results_available, shop:[...response.data.results.shop].map((shop) => {

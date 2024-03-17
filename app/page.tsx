@@ -9,11 +9,12 @@ import Card from "@/components/Card";
 export default function Home() {
   const [enterpriseInfo, setEnterpriseInfo] = useState<EnterpriseProps>({result:0, shop:[]});
   const [keyword, setKeyword] = useState<string>('');
-  const [range, setRange] = useState<string>('3');
+  const [range, setRange] = useState<string>('0');
   const [rangeDisp, setRangeDisp] = useState<number>(300);
   const [currentLocation, setCurrentLocation] = useState({latitude: 0, longitude: 0});
   const [order, setOrder] = useState<string>('1')
   const [start, setStart] = useState<number>(1);
+  const [error, setError] = useState<string>('');
 
   const searchClick = async() => {
     if(navigator.geolocation) {
@@ -24,10 +25,14 @@ export default function Home() {
           const lng = position.coords.longitude
           await getData({keyword, lat, lng, range, order, start:1})
           .then((data) => {
-            setEnterpriseInfo(data);
-            const rangeDisp = range === '1' ? 300 : range === '2' ? 500 : range === '3' ? 1000 : range === '4' ? 2000 : 3000;
-            setRangeDisp(rangeDisp);
-            setStart(11);
+            if(data === '検索範囲を指定するかキーワードを入力して下さい。') {
+              setError(data);
+            } else {
+              setEnterpriseInfo(data);
+              const rangeDisp = range === '1' ? 300 : range === '2' ? 500 : range === '3' ? 1000 : range === '4' ? 2000 : 3000;
+              setRangeDisp(rangeDisp);
+              setStart(11);
+            }
           })
         },
         // 取得失敗した場合
@@ -85,8 +90,17 @@ export default function Home() {
     }
   }
 
+  const errorDelete = () => {
+    const errorDisp = document.querySelector('.error');
+    errorDisp?.classList.add('animate-fadeOut');
+    setTimeout(() => {
+      setError('')
+    }, 500)
+  }
+
   return (
     <>
+      {error.length > 0 && <div className="absolute top-[5px] right-[5px] animate-fadeIn px-4 py-4 bg-red-300 rounded-xl flex flex-row gap-2 error"><p>{error}</p><Image src="/svg/cancel.svg" alt="cancel" width={24} height={24} onClick={errorDelete} className="cursor-pointer"></Image></div>}
       <header className="w-full h-[68px] flex items-center pl-[21px]">
         <h1 className="tracking-default text-2xl">まちめし</h1>
       </header>
@@ -118,10 +132,10 @@ export default function Home() {
                 onChange={(e) => setRange(e.target.value)}
                 value={range}
               >
-                <option value="" className="text-gray-400" disabled>検索範囲を指定</option>
+                <option value="0" defaultChecked>範囲を指定しない</option>
                 <option value="1">300m</option>
                 <option value="2">500m</option>
-                <option value="3" defaultChecked>1000m</option>
+                <option value="3">1000m</option>
                 <option value="4">2000m</option>
                 <option value="5">3000m</option>
               </select>
