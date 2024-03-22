@@ -2,8 +2,19 @@
 import { EnterpriseProps, ParamsProps } from '@/types';
 import axios from 'axios';
 
+// 地球の半径
 const EARTH_RADIUS = 6378.137;
 
+/**
+* ホットペッパーグルメAPIを叩く関数
+* @param {string} keyword - 入力済みのキーワード
+* @param {number} lat - 緯度
+* @param {number} lng - 経度
+* @param {string} range - 検索範囲
+* @param {string} order - 並び順
+* @param {number} start - 取得開始位置
+* @return {Promise<EnterpriseProps> | string} - 取得したデータ or エラーメッセージ
+*/
 export default async function getData({keyword, lat, lng, range, order, start}:{keyword:string, lat:number, lng:number, range:string, order:string, start:number}) {
     if(range === '0' && keyword === '') {
         return '検索範囲を指定するかキーワードを入力して下さい。'
@@ -89,7 +100,11 @@ export default async function getData({keyword, lat, lng, range, order, start}:{
     return data;
 }
 
-// 特定の店舗の情報を取得する関数
+/**
+* 特定の店舗の情報を取得する関数
+* @param {string} id - 店舗ID
+* @return {Promise<any>} - 取得したデータ
+*/
 export async function getDetailData({id}:{id:string}) {
     const response = await axios.get('https://webservice.recruit.co.jp/hotpepper/gourmet/v1/', {
         params: {
@@ -154,12 +169,23 @@ export async function getDetailData({id}:{id:string}) {
     return returnData;
 }
 
-// 位置情報を取得する関数
+/**
+* 角度を度からラジアンに変換するための関数
+* @param {number} deg - 度数値
+* @return {number} - ラジアンに変換された値
+*/
 const deg2rad = (deg:number) => {
     return deg * (Math.PI/180);
 }
 
-// 2点間の距離を求める関数
+/**
+* 2点間の距離を求める関数
+* @param {number} x1 - 現在地の経度
+* @param {number} y1 - 現在地の緯度
+* @param {number} x2 - 店舗の経度
+* @param {number} y2 - 店舗の緯度
+* @return {number} - 2点間の距離
+*/
 const cal_distance = (x1:number, y1:number, x2:number, y2:number) => {
     const dx = x2 - x1;
     const dy = y2 - y1;

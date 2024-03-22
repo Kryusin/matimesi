@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { EnterpriseProps, ShopProps } from "@/types";
-import { getDetailData } from "@/scripts/getData";
+import { getDetailData } from "@/lib/getData";
 import DetailTitle from "@/components/DetailTitle";
 
 export default function Page({params}: {params: {id: string}}) {
@@ -20,7 +20,7 @@ export default function Page({params}: {params: {id: string}}) {
         <div className="flex flex-col w-full justify-center text-[#28282B]">
             <div className="w-full p-[30px] flex flex-row justify-between items-start">
                 <Link href="/" className="flex gap-3 items-center flex-[1_0_0]"><Image src='/svg/arrow.svg' alt="back" width={24} height={24}></Image>戻る</Link>
-                <div className="flex flex-col gap-6 flex-[1_0_0] justify-center items-center">
+                <div className="flex flex-col gap-6 flex-[3_0_0] justify-center items-center">
                     <p className="tracking-default text-[#888888]">{data.genre.name}</p>
                     <h1 className="text-2xl tracking-default">{data.name}</h1>
                 </div>
