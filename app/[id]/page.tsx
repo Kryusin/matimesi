@@ -33,6 +33,11 @@ export default function Page({params}: {params: {id: string}}) {
                         <div className="flex flex-col gap-4">
                             <DetailTitle text="住所" />
                             <p className="tracking-default">{data.address}</p>
+                            <Link href={`https://www.google.co.jp/maps/place/${data.lat},${data.lng}`} target="_blank" className="overflow-hidden flex flex-row rounded-lg gap-2 border-gray-300 border-2 px-2 py-2 hover:bg-green-300 hover:border-green-300 duration-300">
+                                <Image src='/svg/GoogleMap.svg' width={24} height={24} alt="GoogleMap"></Image>
+                                <div className="w-[2px] h-full bg-gray-300"></div>
+                                <p>Google Mapで開く</p>
+                            </Link>
                         </div>
                         <div className="flex flex-col gap-4">
                             <DetailTitle text="アクセス" />

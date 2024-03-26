@@ -19,8 +19,8 @@ export type ShopProps = {
     name_kana: string;
     // お店の住所
     address: string;
-    // lat: number;
-    // lng: number;
+    lat?: number;
+    lng?: number;
     // お店のジャンル
     genre: {
         code: string;

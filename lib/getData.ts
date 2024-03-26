@@ -1,5 +1,5 @@
 'use server'
-import { EnterpriseProps, ParamsProps } from '@/types';
+import { EnterpriseProps, ParamsProps, ShopProps } from '@/types';
 import axios from 'axios';
 
 // 地球の半径
@@ -15,7 +15,7 @@ const EARTH_RADIUS = 6378.137;
 * @param {number} start - 取得開始位置
 * @return {Promise<EnterpriseProps> | string} - 取得したデータ or エラーメッセージ
 */
-export default async function getData({keyword, lat, lng, range, order, start}:{keyword:string, lat:number, lng:number, range:string, order:string, start:number}) {
+export default async function getData({keyword, lat, lng, range, order, start}:{keyword:string, lat:number, lng:number, range:string, order:string, start:number}):Promise<EnterpriseProps | string>{
     if(range === '0' && keyword === '') {
         return '検索範囲を指定するかキーワードを入力して下さい。'
     }
@@ -103,9 +103,9 @@ export default async function getData({keyword, lat, lng, range, order, start}:{
 /**
 * 特定の店舗の情報を取得する関数
 * @param {string} id - 店舗ID
-* @return {Promise<any>} - 取得したデータ
+* @return {Promise<ShopProps>} - 取得したデータ
 */
-export async function getDetailData({id}:{id:string}) {
+export async function getDetailData({id}:{id:string}):Promise<ShopProps> {
     const response = await axios.get('https://webservice.recruit.co.jp/hotpepper/gourmet/v1/', {
         params: {
             key: process.env.NEXT_PUBLIC_API_KEY,
@@ -114,11 +114,13 @@ export async function getDetailData({id}:{id:string}) {
         },
     });
     const data = response.data.results.shop[0];
-    const returnData = {
+    const returnData:ShopProps = {
         id: data.id,
         name: data.name,
         name_kana: data.name_kana,
         address: data.address,
+        lat: data.lat,
+        lng: data.lng,
         genre: {
             code: data.genre.code,
             name: data.genre.name,
@@ -174,7 +176,7 @@ export async function getDetailData({id}:{id:string}) {
 * @param {number} deg - 度数値
 * @return {number} - ラジアンに変換された値
 */
-const deg2rad = (deg:number) => {
+const deg2rad = (deg:number):number => {
     return deg * (Math.PI/180);
 }
 
@@ -186,7 +188,7 @@ const deg2rad = (deg:number) => {
 * @param {number} y2 - 店舗の緯度
 * @return {number} - 2点間の距離
 */
-const cal_distance = (x1:number, y1:number, x2:number, y2:number) => {
+const cal_distance = (x1:number, y1:number, x2:number, y2:number):number => {
     const dx = x2 - x1;
     const dy = y2 - y1;
     const a = Math.pow(Math.sin(dy/2), 2) + Math.cos(y1) * Math.cos(y2) * Math.pow(Math.sin(dx/2), 2);
