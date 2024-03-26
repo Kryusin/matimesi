@@ -17,19 +17,19 @@ export default function Page({params}: {params: {id: string}}) {
     }, [params.id])
 
     return (data &&
-        <div className="flex flex-col w-full justify-center text-[#28282B]">
+        <div className="w-screen flex flex-col justify-center text-[#28282B]">
             <div className="w-full p-[30px] flex flex-row justify-between items-start">
-                <Link href="/" className="flex gap-3 items-center flex-[1_0_0]"><Image src='/svg/arrow.svg' alt="back" width={24} height={24}></Image>戻る</Link>
+                <Link href="/" className="flex gap-3 items-center flex-[1_0_0]"><Image src='/svg/arrow.svg' alt="back" width={24} height={24}></Image><p className="hidden lg:block">戻る</p></Link>
                 <div className="flex flex-col gap-6 flex-[3_0_0] justify-center items-center">
                     <p className="tracking-default text-[#888888]">{data.genre.name}</p>
                     <h1 className="text-2xl tracking-default">{data.name}</h1>
                 </div>
                 <div className="flex-[1_0_0]"></div>
             </div>
-            <div className="flex flex-col lg:flex-row gap-8 px-[8%]">
+            <div className="w-full flex flex-col lg:flex-row gap-8 px-[8%]">
                 <div className="w-full lg:w-[45%] flex flex-col gap-4">
                     <Image src={data.photo.pc.l} alt={data.name} width={100} height={100} className="w-full h-[400px] object-cover rounded-3xl"></Image>
-                    <div className="w-[500px] flex flex-col gap-[30px] lg:p-6">
+                    <div className="w-full flex flex-col gap-[30px] lg:p-6">
                         <div className="flex flex-col gap-4">
                             <DetailTitle text="住所" />
                             <p className="tracking-default">{data.address}</p>

@@ -34,7 +34,6 @@ export default async function getData({keyword, lat, lng, range, order, start}:{
         params.lng = lng;
         params.range = range;
     }
-    console.log(params)
     const response = await axios.get('https://webservice.recruit.co.jp/hotpepper/gourmet/v1/', {
       params: {...params},
     });
