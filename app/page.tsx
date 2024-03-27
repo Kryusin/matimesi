@@ -138,7 +138,7 @@ export default function Home() {
       {error.length > 0 && <div className="absolute bottom-[5px] right-[5px] animate-fadeIn px-4 py-4 bg-red-300 rounded-xl flex flex-row gap-2 error z-20"><p>{error}</p><Image src="/svg/cancel.svg" alt="cancel" width={24} height={24} onClick={errorDelete} className="cursor-pointer"></Image></div>}
       <header className="fixed top-2  bg-white rounded-xl w-[90%] mx-[5%] h-[68px] flex items-center px-[21px] justify-between shadow-[10px_10px_50px_0px_rgba(0,0,0,0.13)] z-10">
         <h1 className="tracking-default text-2xl">まちめし</h1>
-        <button onClick={returnTop} className="text-[#3f3f3f] tracking-default">Top</button>
+        <button onClick={returnTop} className="text-[#3f3f3f] tracking-default">Topへ戻る</button>
       </header>
       <main className="absolute top-32 w-full h-full flex flex-col items-center gap-[55px] pb-4">
         <div className="w-full flex flex-col justify-center px-[12%]">
