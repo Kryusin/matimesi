@@ -13,7 +13,7 @@ import getData from "@/lib/getData";
 import Card from "@/components/Card";
 
 export default function Home() {
-  const [enterpriseInfo, setEnterpriseInfo] = useState<EnterpriseProps>({result:0, shop:[]});
+  const [enterpriseInfo, setEnterpriseInfo] = useState<EnterpriseProps>({ result: 0, shop: [] });
   const [keyword, setKeyword] = useState<string>('');
   const [range, setRange] = useState<string>('0');
   const [rangeDisp, setRangeDisp] = useState<number>(300);
@@ -25,34 +25,34 @@ export default function Home() {
   * 検索ボタンがクリックされた時の処理
   * @return {Promise<void>} - 近くのレストランを検索する
   */
-  const searchClick = async() => {
+  const searchClick = async () => {
     // geolocationが使えるかどうか
-    if(navigator.geolocation) {
+    if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         // 取得成功した場合
-        async function(position) {
+        async function (position) {
           const lat = position.coords.latitude
           const lng = position.coords.longitude
           // 店舗情報を取得
-          await getData({keyword, lat, lng, range, order, start:1})
-          .then((data) => {
-            // エラーが返ってきた場合
-            if(data === '検索範囲を指定するかキーワードを入力して下さい。') {
-              setError(data);
-            } else {
-              // 正常にデータが取得できた場合
-              setEnterpriseInfo(data);
-              const rangeDisp = range === '1' ? 300 : range === '2' ? 500 : range === '3' ? 1000 : range === '4' ? 2000 : 3000;
-              // 検索範囲をセット
-              setRangeDisp(rangeDisp);
-              // スタート位置をセット
-              setStart(11);
-            }
-          })
+          await getData({ keyword, lat, lng, range, order, start: 1 })
+            .then((data) => {
+              // エラーが返ってきた場合
+              if (data === '検索範囲を指定するかキーワードを入力して下さい。') {
+                setError(data);
+              } else {
+                // 正常にデータが取得できた場合
+                setEnterpriseInfo(data);
+                const rangeDisp = range === '1' ? 300 : range === '2' ? 500 : range === '3' ? 1000 : range === '4' ? 2000 : 3000;
+                // 検索範囲をセット
+                setRangeDisp(rangeDisp);
+                // スタート位置をセット
+                setStart(11);
+              }
+            })
         },
         // 取得失敗した場合
-        function(error) {
-          switch(error.code) {
+        function (error) {
+          switch (error.code) {
             case 1: //PERMISSION_DENIED
               alert("位置情報の利用が許可されていません");
               break;
@@ -63,7 +63,7 @@ export default function Home() {
               alert("タイムアウトになりました");
               break;
             default:
-              alert("その他のエラー(エラーコード:"+error.code+")");
+              alert("その他のエラー(エラーコード:" + error.code + ")");
               break;
           }
         }
@@ -75,26 +75,26 @@ export default function Home() {
   * もっと見るボタンがクリックされた時の処理
   * @return {Promise<void>} - start位置を基に店舗情報を取得
   */
-  const getMore = async() => {
+  const getMore = async () => {
     // geolocationが使えるかどうか
-    if(navigator.geolocation) {
+    if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         // 取得成功した場合
-        async function(position) {
+        async function (position) {
           const lat = position.coords.latitude
           const lng = position.coords.longitude
           // 店舗情報を取得
-          await getData({keyword, lat, lng, range, order, start})
-          .then((data) => {
-            // 正常にデータが取得できた場合
-            setEnterpriseInfo({...enterpriseInfo,shop:[...enterpriseInfo.shop, ...data.shop]});
-            // スタート位置をセット
-            setStart(start+10);
-          })
+          await getData({ keyword, lat, lng, range, order, start })
+            .then((data) => {
+              // 正常にデータが取得できた場合
+              setEnterpriseInfo({ ...enterpriseInfo, shop: [...enterpriseInfo.shop, ...data.shop] });
+              // スタート位置をセット
+              setStart(start + 10);
+            })
         },
         // 取得失敗した場合
-        function(error) {
-          switch(error.code) {
+        function (error) {
+          switch (error.code) {
             case 1: //PERMISSION_DENIED
               alert("位置情報の利用が許可されていません");
               break;
@@ -105,7 +105,7 @@ export default function Home() {
               alert("タイムアウトになりました");
               break;
             default:
-              alert("その他のエラー(エラーコード:"+error.code+")");
+              alert("その他のエラー(エラーコード:" + error.code + ")");
               break;
           }
         }
@@ -165,7 +165,7 @@ export default function Home() {
                   <select
                     name="scope"
                     id=""
-                    className="lg:w-[100px] h-[40px] rounded-full text-center bg-[#F3F4F3] text-[#9CA3AF] focus:text-[#3f3f3f] px-2 focus:outline-none"
+                    className={`lg:w-[100px] h-[40px] rounded-full text-center bg-[#F3F4F3] text-[#3f3f3f] px-2 focus:outline-none ${range !== '' && 'text-[#3f3f3f]'}`}
                     onChange={(e) => setRange(e.target.value)}
                     value={range}
                   >
@@ -180,7 +180,7 @@ export default function Home() {
                   <select
                     name="order"
                     id=""
-                    className="lg:w-[100px] h-[40px] rounded-full text-center bg-[#F3F4F3] text-[#9CA3AF] focus:text-[#3f3f3f] px-2 focus:outline-none"
+                    className={`lg:w-[100px] h-[40px] rounded-full text-center bg-[#F3F4F3] text-[#3f3f3f] px-2 focus:outline-none ${order !== '' && 'text-[#3f3f3f]'}`}
                     onChange={(e) => setOrder(e.target.value)}
                     value={order}
                   >
